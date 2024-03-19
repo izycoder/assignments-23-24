@@ -2,7 +2,7 @@ package main.java.assignments.assignment2;
 
 import java.util.ArrayList;
 import java.util.Scanner;
-import assignments.assignment1.*;
+// import assignments.assignment1.*;
 
 public class MainMenu {
     private static final Scanner input = new Scanner(System.in);

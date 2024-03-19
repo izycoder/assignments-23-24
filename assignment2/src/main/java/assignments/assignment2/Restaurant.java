@@ -13,7 +13,6 @@ public class Restaurant {
         // TODO: buat constructor untuk class ini
         this.nama = nama;
         this.menu = new ArrayList<>();
-        // restoList.add(this);
     }
     
     // TODO: tambahkan methods yang diperlukan untuk class ini
@@ -37,8 +36,5 @@ public class Restaurant {
         this.menu.remove(menu);
     }
     
-    // public static ArrayList<Restaurant> getRestoList() {
-    //     return restoList;
-    // }
 }
 

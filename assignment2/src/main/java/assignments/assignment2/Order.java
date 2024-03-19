@@ -9,7 +9,7 @@ public class Order {
     private Menu[] items;
     private String lokasi;
     private boolean orderFinished = false;
-    // private String statusPengiriman = "Not Finished";
+
 
     public Order(String orderId, String tanggal, int ongkir, Restaurant resto, Menu[] items){
         // TODO: buat constructor untuk class ini
@@ -56,7 +56,6 @@ public class Order {
         return items;
     }
 
-    // Method untuk menghitung total harga pesanan
     public double hitungTotal() {
         double total = 0;
         for (Menu item : items) {
