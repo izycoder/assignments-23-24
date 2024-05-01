@@ -335,18 +335,8 @@ public class CustomerSystemCLI extends UserSystemCLI{
             if (order.getOrderId().equals(orderId)) {
                 orderFound = true;
                 System.out.print("Status: "); // minta status baru
-                String newStatus = input.nextLine();
-                String status = ""; // mengganti status lama
-                if (order.getOrderFinished()){
-                    status = "Finished";
-                }
-                else{
-                    status = "Not Finished";
-                }
-                if (status.equalsIgnoreCase(newStatus)) { // Memperbarui status pesanan
-                } else {
-                    order.setOrderFinished(true);
-                }
+                String status = "Finished"; // mengganti status lama
+                order.setOrderFinished(true);
                 
                 break; // Keluar dari loop setelah menemukan pesanan
             }
