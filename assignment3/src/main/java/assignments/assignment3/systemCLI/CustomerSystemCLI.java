@@ -298,7 +298,8 @@ public class CustomerSystemCLI extends UserSystemCLI{
                 // Proses pembayaran dengan kartu kredit
                 if (user.getPayment() instanceof CreditCardPayment) { 
                     CreditCardPayment creditCardPayment = (CreditCardPayment) user.getPayment();
-                    creditCardPayment.processPayment(user.getSaldo(), totalBiaya);
+                    user.setSaldo(creditCardPayment.processPayment(user.getSaldo(), totalBiaya));
+                    handleUpdateStatusPesanan(orderId);
                 }
                 else{
                     System.out.println("User belum memiliki metode pembayaran ini!");
@@ -308,7 +309,8 @@ public class CustomerSystemCLI extends UserSystemCLI{
                 // Proses pembayaran dengan debit
                 if (user.getPayment() instanceof DebitPayment) {
                     DebitPayment debitPayment = (DebitPayment) user.getPayment();
-                    debitPayment.processPayment(user.getSaldo(), totalBiaya);
+                    user.setSaldo(debitPayment.processPayment(user.getSaldo(), totalBiaya));
+                    handleUpdateStatusPesanan(orderId);
                 }
                 else{
                     System.out.println("User belum memiliki metode pembayaran ini!");
@@ -326,12 +328,8 @@ public class CustomerSystemCLI extends UserSystemCLI{
 
     
 
-    void handleUpdateStatusPesanan(){
+    void handleUpdateStatusPesanan(String orderId){
         // TODO: Implementasi method untuk handle ketika customer ingin update status pesanan
-        System.out.println("--------------Update Status Pesanan----------------");
-        System.out.print("Order ID: ");
-        String orderId = input.nextLine();
-        
         boolean orderFound = false;
         for (Order order : userLoggedIn.getOrderHistory()) { // cek order id
             if (order.getOrderId().equals(orderId)) {
@@ -346,10 +344,8 @@ public class CustomerSystemCLI extends UserSystemCLI{
                     status = "Not Finished";
                 }
                 if (status.equalsIgnoreCase(newStatus)) { // Memperbarui status pesanan
-                    System.out.println("Status pesanan dengan ID " + orderId + " tidak berhasil diupdate!"); // jika sama tidak bisa
                 } else {
                     order.setOrderFinished(true);
-                    System.out.println("Status pesanan dengan ID " + orderId + " berhasil diupdate!"); // jika beda berhasil
                 }
                 
                 break; // Keluar dari loop setelah menemukan pesanan
