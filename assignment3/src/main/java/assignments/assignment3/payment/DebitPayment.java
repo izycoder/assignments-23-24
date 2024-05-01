@@ -1,6 +1,24 @@
 package assignments.assignment3.payment;
 
-public class DebitPayment {
-    //TODO implementasikan class di sini
-    // Anda dibebaskan untuk membuat method yang diperlukan
+public class DebitPayment implements DepeFoodPaymentSystem {
+    
+    // Implementasi method dari interface DepeFoodPaymentSystem
+    @Override
+    public long processPayment(long saldo, double bill) {
+        if (bill < 50000) {
+            // Jika total harga pesanan kurang dari Rp50000
+            System.out.println("Jumlah pesanan kurang dari Rp50000. Mohon menggunakan metode pembayaran yang lain.");
+            return saldo; // Saldo tidak berubah
+        } else if (saldo < bill) {
+            // Jika saldo tidak mencukupi
+            System.out.println("Saldo tidak mencukupi. Mohon menggunakan metode pembayaran yang lain.");
+            return saldo; // Saldo tidak berubah
+        } else {
+            // Jika saldo mencukupi
+            long newSaldo = saldo - (long) bill;
+            System.out.println("Berhasil membayar bill sebesar Rp " + bill);
+            System.out.println("Sisa saldo sebesar Rp " + newSaldo);
+            return newSaldo; // Mengembalikan saldo baru
+        }
+    }
 }

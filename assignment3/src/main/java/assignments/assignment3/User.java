@@ -1,6 +1,10 @@
-package assignments.assignment2;
+package assignments.assignment3;
 
 import java.util.ArrayList;
+
+import assignments.assignment2.Order;
+import assignments.assignment3.payment.DepeFoodPaymentSystem;
+
 public class User {
     // TODO: tambahkan attributes yang diperlukan untuk class ini
     private String name;
@@ -9,10 +13,10 @@ public class User {
     private String lokasi;
     private ArrayList<Order> orderHistory;
     public String role;
-
+    private DepeFoodPaymentSystem payment;
+    private long saldo;
    
-
-    public User(String nama, String nomorTelepon, String email, String lokasi, String role) {
+    public User(String nama, String nomorTelepon, String email, String lokasi, String role, DepeFoodPaymentSystem payment, long saldo) {
         // TODO: buat constructor untuk class ini
         this.name = nama;
         this.nomorTelepon = nomorTelepon;
@@ -20,6 +24,8 @@ public class User {
         this.lokasi = lokasi;
         this.role = role;
         this.orderHistory = new ArrayList<>();
+        this.payment = payment;
+        this.saldo = saldo;
     }
     
     // TODO: tambahkan methods yang diperlukan untuk class ini
@@ -62,4 +68,21 @@ public class User {
     public void addToOrderHistory(Order order) {
         orderHistory.add(order);
     }
+
+    public long getSaldo() {
+        return saldo;
+    }
+
+    public void setSaldo(long saldo) {
+        this.saldo = saldo;
+    }
+    
+    public DepeFoodPaymentSystem getPayment(){
+        return payment;
+    }
+
+    public void setPayment(DepeFoodPaymentSystem payment){
+        this.payment = payment;
+    }
+
 }
