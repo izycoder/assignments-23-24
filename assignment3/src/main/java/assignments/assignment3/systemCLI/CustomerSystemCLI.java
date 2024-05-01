@@ -2,18 +2,19 @@ package assignments.assignment3.systemCLI;
 
 import java.util.ArrayList;
 import java.util.Scanner;
-import assignments.assignment2.MainMenu;
+
 import assignments.assignment2.Menu;
 import assignments.assignment2.Order;
 import assignments.assignment2.Restaurant;
 import assignments.assignment3.User;
 import assignments.assignment3.payment.CreditCardPayment;
 import assignments.assignment3.payment.DebitPayment;
+import assignments.assignment3.MainMenu;
 
 //TODO: Extends abstract class yang diberikan
 public class CustomerSystemCLI extends UserSystemCLI{
     private ArrayList<Restaurant> restoList;
-    private User userLoggedIn;
+    public User userLoggedIn;
 
     public CustomerSystemCLI(ArrayList<Restaurant> restoList, User userLoggedIn) {
         this.restoList = restoList;
@@ -55,6 +56,7 @@ public class CustomerSystemCLI extends UserSystemCLI{
     void handleBuatPesanan(){
         // TODO: Implementasi method untuk handle ketika customer membuat pesanan
         System.out.println("\n--------------Buat Pesanan----------------");
+        userLoggedIn = MainMenu.userLoggedIn;
         boolean pesananSukses = false; // boolean untuk while loop
         while (!pesananSukses) {
             System.out.print("Nama Restoran: ");
@@ -108,7 +110,7 @@ public class CustomerSystemCLI extends UserSystemCLI{
                         menuSesuai = false;
                         String restaurantId = namaRestoran.substring(0, 4).toUpperCase(); // substring untuk id restoran
                         int jumlah = 0; // variabel jumlah bertipe int
-                        String noTelepon = this.userLoggedIn.getNomorTelepon();
+                        String noTelepon = userLoggedIn.getNomorTelepon();
                         for (int i = 0; i < noTelepon.length() ; i++) { // for loop sepanjang notelp
                             int angka = Character.getNumericValue(noTelepon.charAt(i)); // mengambil char angka tiap notelp
                             jumlah += angka; // menjumlahkannya ke dalam jumlah
@@ -195,6 +197,7 @@ public class CustomerSystemCLI extends UserSystemCLI{
         // TODO: Implementasi method untuk handle ketika customer ingin cetak bill
         System.out.println("--------------Cetak Bill----------------");
         System.out.print("Masukkan Order ID: ");
+        userLoggedIn = MainMenu.userLoggedIn;
         String orderId = input.nextLine();
         boolean orderAda = false;
         Order orderan = null;

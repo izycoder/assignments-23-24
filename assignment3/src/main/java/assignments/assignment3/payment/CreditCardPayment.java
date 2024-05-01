@@ -1,6 +1,7 @@
 package assignments.assignment3.payment;
 
 public class CreditCardPayment implements DepeFoodPaymentSystem {
+    public double TRANSACTION_FEE_PERCENTAGE = 0.02;
     
     // Implementasi method dari interface DepeFoodPaymentSystem
     @Override
@@ -22,6 +23,6 @@ public class CreditCardPayment implements DepeFoodPaymentSystem {
     // Implementasi method untuk menghitung biaya transaksi
     private double countTransactionFee(double amount) {
         // Hitung biaya transaksi (2% dari jumlah pembayaran)
-        return 0.02 * amount;
+        return TRANSACTION_FEE_PERCENTAGE * amount;
     }
 }

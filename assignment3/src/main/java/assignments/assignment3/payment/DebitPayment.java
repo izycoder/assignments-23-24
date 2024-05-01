@@ -1,11 +1,11 @@
 package assignments.assignment3.payment;
 
 public class DebitPayment implements DepeFoodPaymentSystem {
-    
+    public double MINIMUM_TOTAL_PRICE = 50000.0;
     // Implementasi method dari interface DepeFoodPaymentSystem
     @Override
     public long processPayment(long saldo, double bill) {
-        if (bill < 50000) {
+        if (bill < MINIMUM_TOTAL_PRICE) {
             // Jika total harga pesanan kurang dari Rp50000
             System.out.println("Jumlah pesanan kurang dari Rp50000. Mohon menggunakan metode pembayaran yang lain.");
             return saldo; // Saldo tidak berubah

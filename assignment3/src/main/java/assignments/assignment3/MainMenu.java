@@ -15,7 +15,7 @@
         private final LoginManager loginManager;
         private static ArrayList<Restaurant> restoList;
         private static ArrayList<User> userList;
-        private static User userLoggedIn; 
+        public static User userLoggedIn; 
 
         public MainMenu(Scanner in, LoginManager loginManager) {
             this.input = in;
@@ -47,6 +47,7 @@
         }
 
         private void login(){
+            initUser();
             System.out.println("\nSilakan Login:");
             System.out.print("Nama: ");
             String nama = input.nextLine();
@@ -55,23 +56,21 @@
 
             // TODO: Validasi input login
             // Validate input login
-            User userLoggedIn = null;
+            userLoggedIn = null;
             for (User user : userList) {
                 if (user.getName().equals(nama) && user.getNomorTelepon().equals(noTelp)) {
-                    MainMenu.userLoggedIn = userLoggedIn;
-                    this.userLoggedIn = user;
+                    userLoggedIn = user;
                     break;
                 }
             }
 
-            if (this.userLoggedIn == null) {
+            if (userLoggedIn == null) {
                 System.out.println("Nama atau nomor telepon salah. Silakan coba lagi.");
                 return;
             }
             // TODO: lengkapi
-            // this.userLoggedIn = userLoggedIn;
             System.out.println("Selamat Datang " + nama + "!");
-            UserSystemCLI systemCLI = loginManager.getSystem(this.userLoggedIn.role);
+            UserSystemCLI systemCLI = loginManager.getSystem(userLoggedIn.role);
             systemCLI.run();
         }
 
@@ -106,4 +105,5 @@
             userList.add(new User("Admin", "123456789", "admin@gmail.com", "-", "Admin", new CreditCardPayment(), 0));
             userList.add(new User("Admin Baik", "9123912308", "admin.b@gmail.com", "-", "Admin", new CreditCardPayment(), 0));
         }
+        
     }
