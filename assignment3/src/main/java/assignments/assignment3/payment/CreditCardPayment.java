@@ -2,7 +2,7 @@ package assignments.assignment3.payment;
 
 public class CreditCardPayment implements DepeFoodPaymentSystem {
     public double TRANSACTION_FEE_PERCENTAGE = 0.02;
-    
+
     // Implementasi method dari interface DepeFoodPaymentSystem
     @Override
     public long processPayment(long saldo, double bill) {
@@ -15,7 +15,7 @@ public class CreditCardPayment implements DepeFoodPaymentSystem {
         else{
         double transactionFee = countTransactionFee(bill);
         double totalAmount = bill + transactionFee;
-        System.out.println("Berhasil Membayar Bill sebesar Rp "+ totalAmount + " dengan biaya transaksi sebesar Rp " + transactionFee);
+        System.out.println("Berhasil Membayar Bill sebesar Rp "+ bill + " dengan biaya transaksi sebesar Rp " + transactionFee);
         return saldo - (long)totalAmount;
     }
     }

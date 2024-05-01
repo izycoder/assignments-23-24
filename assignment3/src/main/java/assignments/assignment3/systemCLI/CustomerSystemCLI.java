@@ -224,10 +224,10 @@ public class CustomerSystemCLI extends UserSystemCLI{
             System.out.println("Pesanan:");
             for (Menu item : orderan.getItems()) {
                 if (item != null){
-                System.out.println("- " + item.getNamaMakanan() + " Rp " + item.getHarga());}
+                System.out.println("- " + item.getNamaMakanan() + " Rp " + String.format("%.0f", item.getHarga()));}
             }
             System.out.println("Biaya Ongkos Kirim: Rp " + orderan.getOngkir());
-            System.out.println("Total Biaya: Rp " + orderan.hitungTotal());
+            System.out.println("Total Biaya: Rp " +  String.format("%.0f", orderan.hitungTotal()));
         }
         else {
             System.out.println("Order dengan ID " + orderId + " tidak ditemukan."); // jika order id salah
