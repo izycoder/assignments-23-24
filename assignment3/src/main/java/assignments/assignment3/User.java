@@ -2,7 +2,6 @@ package assignments.assignment3;
 
 import java.util.ArrayList;
 
-import assignments.assignment2.Order;
 import assignments.assignment3.payment.DepeFoodPaymentSystem;
 
 public class User {

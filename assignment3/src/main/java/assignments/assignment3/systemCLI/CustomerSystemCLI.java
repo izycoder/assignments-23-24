@@ -3,13 +3,13 @@ package assignments.assignment3.systemCLI;
 import java.util.ArrayList;
 import java.util.Scanner;
 
-import assignments.assignment2.Menu;
-import assignments.assignment2.Order;
-import assignments.assignment2.Restaurant;
+import assignments.assignment3.Menu;
+import assignments.assignment3.Restaurant;
 import assignments.assignment3.User;
 import assignments.assignment3.payment.CreditCardPayment;
 import assignments.assignment3.payment.DebitPayment;
 import assignments.assignment3.MainMenu;
+import assignments.assignment3.Order;
 
 //TODO: Extends abstract class yang diberikan
 public class CustomerSystemCLI extends UserSystemCLI{
@@ -107,7 +107,6 @@ public class CustomerSystemCLI extends UserSystemCLI{
                         }
                     }
                     if (pesananTersedia) {
-                        menuSesuai = false;
                         String restaurantId = namaRestoran.substring(0, 4).toUpperCase(); // substring untuk id restoran
                         int jumlah = 0; // variabel jumlah bertipe int
                         String noTelepon = userLoggedIn.getNomorTelepon();
@@ -160,31 +159,31 @@ public class CustomerSystemCLI extends UserSystemCLI{
                             biaya += 60000; // biaya 60000
                             break;
                         }
-                        Menu[] pesananArray = new Menu[pesananList.size()]; // array pesanan
+                        Menu[] pesananArray = new Menu[pesananList.size()];
                         for (int i = 0; i < pesananList.size(); i++) {
                             String namaMenu = pesananList.get(i);
-                            // Assuming getMenuByName method is available in Restaurant class to get Menu object by name
                             for (Menu menu : restoraunt.getMenu()) {
-                                if (menu.getNamaMakanan().equalsIgnoreCase(namaMenu)){ 
-                                    pesananArray[i] = menu; // jika nama sesuai masuk ke dalam array
+                                if (menu.getNamaMakanan().equalsIgnoreCase(namaMenu)) {
+                                    pesananArray[i] = menu;
                                     break;
                                 }
                             }
-                        }
-                    menuSesuai = true;
-                    Order order = new Order(orderId, tanggalPemesanan, biaya, restoraunt, pesananArray); // menambahkn ke dalam objek order
+                        };
+                    Order order = new Order(orderId,tanggalPemesanan, biaya ,restoraunt,  pesananArray); // menambahkn ke dalam objek order
                     userLoggedIn.addToOrderHistory(order); // menambahkan history
-                    order.setLokasi(userLoggedIn.getLokasi());
+                    // order.setLokasi(userLoggedIn.getLokasi());
                     System.out.print("Pesanan dengan ID "+ orderId + " diterima!\n");
                 // Jika semua pesanan tidak tersedia di restoran, tampilkan pesan kesalahan
                 if (!menuSesuai) { // jika tidak sesuai
                     System.out.println("Mohon memesan menu yang tersedia di Restoran!\n");
                 }
-    
                 }
                 else{
-                    System.out.println("Masukkan tanggal sesuai format (DD/MM/YYYY)!");
+                    System.out.println("Masukkan tanggal sesuai format (DD/MM/YYYY)!\n");
                 }
+            }
+            else {
+                System.out.println("Masukkan tanggal sesuai format (DD/MM/YYYY)!\n");
             }
             }
             else{
@@ -218,8 +217,8 @@ public class CustomerSystemCLI extends UserSystemCLI{
             System.out.println("\nBill:"); // print bill
             System.out.println("Order ID: " + orderan.getOrderId());
             System.out.println("Tanggal Pemesanan: " + orderan.getTanggal());
-            System.out.println("Restaurant: " + orderan.getResto().getNama());
-            System.out.println("Lokasi Pengiriman: " + orderan.getLokasi());
+            System.out.println("Restaurant: " + orderan.getRestaurant().getNama());
+            System.out.println("Lokasi Pengiriman: " + userLoggedIn.getLokasi());
             System.out.println("Status Pengiriman: " + status);
             System.out.println("Pesanan:");
             for (Menu item : orderan.getItems()) {
@@ -227,7 +226,7 @@ public class CustomerSystemCLI extends UserSystemCLI{
                 System.out.println("- " + item.getNamaMakanan() + " Rp " + String.format("%.0f", item.getHarga()));}
             }
             System.out.println("Biaya Ongkos Kirim: Rp " + orderan.getOngkir());
-            System.out.println("Total Biaya: Rp " +  String.format("%.0f", orderan.hitungTotal()));
+            System.out.println("Total Biaya: Rp " +  String.format("%.0f", orderan.getTotalHarga()));
         }
         else {
             System.out.println("Order dengan ID " + orderId + " tidak ditemukan."); // jika order id salah
@@ -251,7 +250,8 @@ public class CustomerSystemCLI extends UserSystemCLI{
             Menu[] sortedMenu = sortMenuByHarga(restaurant.getMenu()); // sorting dengan BUBBLE SORT
             System.out.println("Menu:");
             for (int i = 0; i < sortedMenu.length; i++) {
-                System.out.println((i + 1) + ". " + sortedMenu[i].getNamaMakanan() + " " + sortedMenu[i].getHarga());
+                String formattedHarga = String.format("%.0f",  sortedMenu[i].getHarga());
+                System.out.println((i + 1) + ". " + sortedMenu[i].getNamaMakanan() + " " + formattedHarga);
             }
         } else {
             System.out.println("Restoran tidak terdaftar pada sistem.");
@@ -279,10 +279,10 @@ public class CustomerSystemCLI extends UserSystemCLI{
             return;
         }
         
-        double totalBiaya = orderan.hitungTotal();
+        double totalBiaya = orderan.getTotalHarga();
         System.out.println("\nDetail Tagihan:");
         System.out.println("Order ID: " + orderan.getOrderId());
-        System.out.println("Total Biaya: Rp " + totalBiaya);
+        System.out.println("Total Biaya: Rp " + String.format("%.0f",totalBiaya));
 
         // Menampilkan opsi pembayaran
         System.out.println("\nOpsi Pembayaran:");

@@ -3,9 +3,8 @@ package assignments.assignment3.systemCLI;
 import java.util.ArrayList;
 import java.util.Scanner;
 
-import assignments.assignment2.Restaurant;
-import assignments.assignment2.MainMenu;
-import assignments.assignment2.Menu;
+import assignments.assignment3.Restaurant;
+import assignments.assignment3.Menu;
 
 //TODO: Extends Abstract yang diberikan
 public class AdminSystemCLI extends UserSystemCLI {
@@ -98,7 +97,7 @@ public class AdminSystemCLI extends UserSystemCLI {
                     Restaurant newRestoran = new Restaurant(namaRestoran);
                     restoList.add(newRestoran);
                     for (Menu menu : menuRestoran) {
-                        newRestoran.tambahMenu(menu);
+                        newRestoran.addMenu(menu);
                     }
                     System.out.println("Restaurant " + namaRestoran + " berhasil terdaftar."); // berhasil
                     restoranValid = true;

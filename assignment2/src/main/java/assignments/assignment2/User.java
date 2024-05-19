@@ -21,6 +21,7 @@ public class User {
         this.role = role;
         this.orderHistory = new ArrayList<>();
     }
+
     
     // TODO: tambahkan methods yang diperlukan untuk class ini
     public String getName() {
