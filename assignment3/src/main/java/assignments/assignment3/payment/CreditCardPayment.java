@@ -15,7 +15,9 @@ public class CreditCardPayment implements DepeFoodPaymentSystem {
         else{
         double transactionFee = countTransactionFee(bill);
         double totalAmount = bill + transactionFee;
-        System.out.println("Berhasil Membayar Bill sebesar Rp "+ bill + " dengan biaya transaksi sebesar Rp " + transactionFee);
+        String formattedBill = String.format("%.0f", bill);
+        String formattedFee = String.format("%.0f", transactionFee);
+        System.out.println("Berhasil Membayar Bill sebesar Rp "+ formattedBill + " dengan biaya transaksi sebesar Rp " + formattedFee);
         return saldo - (long)totalAmount;
     }
     }
