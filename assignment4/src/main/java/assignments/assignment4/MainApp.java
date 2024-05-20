@@ -23,6 +23,7 @@ public class MainApp extends Application {
     public void start(Stage primaryStage) {
         window = primaryStage;
         window.setTitle("DepeFood Ordering System");
+        window.setResizable(false); 
         DepeFood.initUser(); // Initialize users
 
         // Initialize all scenes
