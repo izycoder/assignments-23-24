@@ -44,6 +44,7 @@ public class LoginForm {
         grid.setStyle("-fx-background-color: rgb(116, 105, 182);");
         grid.setHgap(50);
         grid.setAlignment(Pos.CENTER);
+        
 
         // Add "Welcome to DepeFood" text on the left
         VBox welcomeText = new VBox();

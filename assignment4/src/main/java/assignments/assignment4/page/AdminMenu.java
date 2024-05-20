@@ -119,12 +119,11 @@ public class AdminMenu extends MemberMenu{
         Button submitButton = new Button("Submit");
         submitButton.setStyle("-fx-background-color: rgb(225, 175, 209);");
         Button kembaliButton = new Button("Kembali");
-        kembaliButton.setStyle("-fx-background-color: rgb(225, 175, 209);");
+        
         submitButton.setOnAction(event -> handleTambahRestoran(restaurantNameField.getText()));
-        kembaliButton.setOnAction(event -> mainApp.setScene(scene));
         
         // Add the components to the layout
-        layout.getChildren().addAll(labelRestaurant, restaurantNameField, submitButton, kembaliButton);
+        layout.getChildren().addAll(labelRestaurant, restaurantNameField, submitButton);
         return new Scene(layout, 800, 600);
     }
 

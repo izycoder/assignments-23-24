@@ -41,7 +41,6 @@ public class CustomerMenu extends MemberMenu{
     private List<Restaurant> restoList = new ArrayList<>();
     private User user;
     private ListView<String> menuItemsListView = new ListView<>();
-    private Text saldoUserText;
 
     public CustomerMenu(Stage stage, MainApp mainApp, User user) {
         this.stage = stage;
@@ -248,7 +247,6 @@ public class CustomerMenu extends MemberMenu{
 
     private Scene createCekSaldoScene() {
         // TODO: Implementasikan method ini untuk menampilkan page cetak saldo
-
         VBox menuLayout = new VBox(10);
         menuLayout.setStyle("-fx-background-color: rgb(116, 105, 182);");
         menuLayout.setAlignment(Pos.CENTER);
@@ -257,21 +255,19 @@ public class CustomerMenu extends MemberMenu{
         namaUser.setFill(Color.rgb(255, 230, 230));
         namaUser.setFont(Font.font("Verdana", FontWeight.BOLD, 15));
         
-        Text saldoUser;
-        if (true){
-            saldoUser = new Text("Saldo : Rp " + (user.getSaldo()));
-        }
-        saldoUser.setFill(Color.rgb(255, 230, 230));
-        saldoUser.setFont(Font.font("Verdana", FontWeight.BOLD, 15));
-
         Button kembaliButton = new Button("Kembali");
         kembaliButton.setMinWidth(150);
         kembaliButton.setStyle("-fx-background-color: rgb(225, 175, 209);");
-        kembaliButton.setOnAction(event -> {
-            mainApp.setScene(scene);
-        });
+        kembaliButton.setOnAction(event -> mainApp.setScene(scene));
         
-        menuLayout.getChildren().addAll(namaUser, saldoUser, kembaliButton);           
+        if (orderSekarang != null){
+            Text saldoUser = new Text("Saldo : Rp " + (user.getSaldo() - (long) orderSekarang.getTotalHarga()));
+        }
+        Text saldoUser = new Text("Saldo : Rp " + user.getSaldo());
+        saldoUser.setFill(Color.rgb(255, 230, 230));
+        saldoUser.setFont(Font.font("Verdana", FontWeight.BOLD, 15));
+        
+        menuLayout.getChildren().addAll(namaUser, saldoUser, kembaliButton);   
         return new Scene(menuLayout, 800,600);
     }
 
@@ -297,15 +293,11 @@ public class CustomerMenu extends MemberMenu{
             String pesan;
             if (pilihanPembayaran == "Credit Card"){
                 pesan = "Berhasil Membayar Bill sebesar Rp " + order.getTotalHarga() + " dengan biaya transaksi sebesar Rp " + (order.getTotalHarga()*2/100) ;
-                long saldoAfter = user.getSaldo() - (long) order.getTotalHarga();
-                user.setSaldo(saldoAfter);
             }
             else{
                 pesan = "Berhasil membayar bill sebesar Rp " + order.getTotalHarga();
-                long saldoAfter = user.getSaldo() - (long) order.getTotalHarga();
-                user.setSaldo(saldoAfter);
             }
-            DepeFood.handleBayarBill(orderID, pilihanPembayaran); 
+            DepeFood.handleBayarBill(orderID, pilihanPembayaran);
             showAlert("Pembayaran Berhasil",null, pesan, Alert.AlertType.INFORMATION);
             mainApp.setScene(payBillScene);
         }
