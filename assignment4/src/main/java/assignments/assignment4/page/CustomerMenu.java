@@ -259,10 +259,7 @@ public class CustomerMenu extends MemberMenu{
         kembaliButton.setMinWidth(150);
         kembaliButton.setStyle("-fx-background-color: rgb(225, 175, 209);");
         kembaliButton.setOnAction(event -> mainApp.setScene(scene));
-        
-        if (orderSekarang != null){
-            Text saldoUser = new Text("Saldo : Rp " + (user.getSaldo() - (long) orderSekarang.getTotalHarga()));
-        }
+       
         Text saldoUser = new Text("Saldo : Rp " + user.getSaldo());
         saldoUser.setFill(Color.rgb(255, 230, 230));
         saldoUser.setFont(Font.font("Verdana", FontWeight.BOLD, 15));
