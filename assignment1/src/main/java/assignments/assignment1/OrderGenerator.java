@@ -46,14 +46,39 @@ public class OrderGenerator {
      */
     public static String generateOrderID(String namaRestoran, String tanggalOrder, String noTelepon) {
 
-        String restaurantCode = getRestaurantCode(namaRestoran);
-        String formattedDate = formatDate(tanggalOrder);
-        String phoneNumberChecksum = getPhoneNumberChecksum(noTelepon);
-
-        String id = restaurantCode + formattedDate + phoneNumberChecksum;
-        String checksum = calculateChecksum(id);
-
-        return id + checksum;
+        String restaurantId = namaRestoran.substring(0, 4).toUpperCase(); // substring untuk id restoran
+        tanggalOrder = tanggalOrder.replace("/", ""); // membuang garis miring dari tanggal order
+        int jumlah = 0; // variabel jumlah bertipe int
+        for (int i = 0; i < noTelepon.length(); i++) { // for loop sepanjang notelp
+            int angka = Character.getNumericValue(noTelepon.charAt(i)); // mengambil char angka tiap notelp
+            jumlah += angka; // menjumlahkannya ke dalam jumlah
+        }
+        jumlah = jumlah % 100; // jumlah dimodulo 100
+        String kode = Integer.toString(jumlah); // kode adalah jumlah bertipe string
+        if (jumlah < 10){ // jika hasil modulo hanya 1 digit / kurang dari 10
+            kode = "0" + kode; // maka ditambahkan 0 di depan kode
+        }
+        String strChecksum = restaurantId + tanggalOrder + kode; // 14 kode pertama
+        String characterSet = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ"; // character set
+        int checkSum1 = 0; // variabel checksum1
+        int checkSum2 = 0; // variabel checksum2
+        for (int i = 0; i < strChecksum.length(); i ++){ // for loop sepanjang 14 kode pertama
+            char cek = strChecksum.charAt(i); // variabel cek untuk char ke i di 14 kode pertama
+            int index = characterSet.indexOf(cek); // index untuk mencari huruf di characterset sesuai index 
+            if (i % 2 == 0){ // jika for loop genap
+                checkSum1 += index; // checksum1 ditambahkan index
+            }
+            else{ // jika for loop ganjil
+                checkSum2 += index; // checksum2 ditambahkan index
+            } 
+        }
+        checkSum1 = checkSum1 % 36; // checksum 1 dimodulo 36
+        checkSum2 = checkSum2 % 36; // checksum 2 dimodulo 36
+        char cs1 = characterSet.charAt(checkSum1); // variabel char cs1 adalah index ke checksum1 di characterset
+        char cs2 = characterSet.charAt(checkSum2); // variabel char cs2 adalah index ke checksum2 di characterset
+    
+        String orderId = strChecksum + cs1 + cs2; // return hasil order ID
+        return orderId; // return order ID
     }
 
     /*
