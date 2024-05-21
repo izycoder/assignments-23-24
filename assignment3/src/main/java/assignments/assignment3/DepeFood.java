@@ -191,19 +191,16 @@ public class DepeFood {
                 continue;
             }
 
-            long amountToPay = 0;
 
             try {
-                amountToPay = paymentSystem.processPayment(userLoggedIn.getSaldo(), (long) order.getTotalHarga());
+                long saldoLeft = paymentSystem.processPayment(userLoggedIn.getSaldo(), (double) order.getTotalHarga());
+                userLoggedIn.setSaldo(saldoLeft);
             } catch (Exception e) {
                 System.out.println(e.getMessage());
                 System.out.println();
                 continue;
             }
 
-            long saldoLeft = userLoggedIn.getSaldo() - amountToPay;
-
-            userLoggedIn.setSaldo(saldoLeft);
             handleUpdateStatusPesanan(order);
 
             DecimalFormat decimalFormat = new DecimalFormat();
@@ -211,7 +208,7 @@ public class DepeFood {
             symbols.setGroupingSeparator('.');
             decimalFormat.setDecimalFormatSymbols(symbols);
 
-            System.out.printf("Berhasil Membayar Bill sebesar Rp %s", decimalFormat.format(amountToPay));
+            System.out.printf("Berhasil Membayar Bill sebesar Rp %s", decimalFormat.format(order.getTotalHarga()));
 
             return;
         }

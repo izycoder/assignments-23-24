@@ -41,6 +41,8 @@ public class CustomerMenu extends MemberMenu{
     private List<Restaurant> restoList = new ArrayList<>();
     private User user;
     private ListView<String> menuItemsListView = new ListView<>();
+    private static Order orderSekarang;
+    private final Text saldoUser = new Text();
 
     public CustomerMenu(Stage stage, MainApp mainApp, User user) {
         this.stage = stage;
@@ -99,7 +101,10 @@ public class CustomerMenu extends MemberMenu{
         buatPesanan.setOnAction(event -> mainApp.setScene(addOrderScene));
         cetakBill.setOnAction(event -> mainApp.setScene(printBillScene));
         bayarBill.setOnAction(event -> mainApp.setScene(payBillScene));
-        cekSaldo.setOnAction(event -> mainApp.setScene(cekSaldoScene));
+        cekSaldo.setOnAction(event -> {
+            saldoUser.setText("Saldo : Rp " + DepeFood.getUserLoggedIn().getSaldo());
+            mainApp.setScene(cekSaldoScene);
+        });
         logoutButton.setOnAction(event -> mainApp.logout());
 
         buttonVBox.getChildren().addAll(buatPesanan, cetakBill, bayarBill, cekSaldo, logoutButton);
@@ -200,7 +205,10 @@ public class CustomerMenu extends MemberMenu{
         Button printButton = new Button("Print Bill");
         printButton.setMinWidth(150);
         printButton.setStyle("-fx-background-color: rgb(225, 175, 209);");
-        printButton.setOnAction(event -> mainApp.setScene(billPrinter.getScene(orderField.getText())));
+        printButton.setOnAction(event -> {
+            orderField.clear();
+            mainApp.setScene(billPrinter.getScene(orderField.getText()));
+        });
 
         Button kembaliButton = new Button("Kembali");
         kembaliButton.setMinWidth(150);
@@ -248,21 +256,23 @@ public class CustomerMenu extends MemberMenu{
     private Scene createCekSaldoScene() {
         // TODO: Implementasikan method ini untuk menampilkan page cetak saldo
         VBox menuLayout = new VBox(10);
+        menuLayout.getChildren().clear();
         menuLayout.setStyle("-fx-background-color: rgb(116, 105, 182);");
         menuLayout.setAlignment(Pos.CENTER);
 
         Text namaUser = new Text(user.getName());
         namaUser.setFill(Color.rgb(255, 230, 230));
         namaUser.setFont(Font.font("Verdana", FontWeight.BOLD, 15));
+
+        saldoUser.setFill(Color.rgb(255, 230, 230));
+        saldoUser.setFont(Font.font("Verdana", FontWeight.BOLD, 15));
         
         Button kembaliButton = new Button("Kembali");
         kembaliButton.setMinWidth(150);
         kembaliButton.setStyle("-fx-background-color: rgb(225, 175, 209);");
-        kembaliButton.setOnAction(event -> mainApp.setScene(scene));
-       
-        Text saldoUser = new Text("Saldo : Rp " + user.getSaldo());
-        saldoUser.setFill(Color.rgb(255, 230, 230));
-        saldoUser.setFont(Font.font("Verdana", FontWeight.BOLD, 15));
+        kembaliButton.setOnAction(event -> {
+            mainApp.setScene(scene);
+        });
         
         menuLayout.getChildren().addAll(namaUser, saldoUser, kembaliButton);   
         return new Scene(menuLayout, 800,600);
@@ -285,18 +295,39 @@ public class CustomerMenu extends MemberMenu{
 
     private void handleBayarBill(String orderID, String pilihanPembayaran) {
         //TODO: Implementasi validasi pembayaran
+        boolean pembayaranDebit = false;
+        boolean pembayaranCredit = false;
+        if (user.getPayment().getClass().getSimpleName().equals("DebitPayment")) {
+            pembayaranDebit = true;
+        }
+        else {
+            pembayaranCredit = true;
+        }
         Order order = DepeFood.getOrderOrNull(orderID);
         if (order != null){
             String pesan;
             if (pilihanPembayaran == "Credit Card"){
-                pesan = "Berhasil Membayar Bill sebesar Rp " + order.getTotalHarga() + " dengan biaya transaksi sebesar Rp " + (order.getTotalHarga()*2/100) ;
+                if (pembayaranCredit){
+                    pesan = "Berhasil Membayar Bill sebesar Rp " + order.getTotalHarga() + " dengan biaya transaksi sebesar Rp " + (order.getTotalHarga()*2/100) ;
+                    showAlert("Pembayaran Berhasil",null, pesan, Alert.AlertType.INFORMATION);
+                    DepeFood.handleBayarBill(orderID, pilihanPembayaran);
+                    mainApp.setScene(payBillScene);
+                }
+                else{
+                    showAlert("Error", null, "Invalid Payment. User doesnt have the payment type.", Alert.AlertType.ERROR);
+                }
             }
             else{
-                pesan = "Berhasil membayar bill sebesar Rp " + order.getTotalHarga();
+                if (pembayaranDebit){
+                    pesan = "Berhasil membayar bill sebesar Rp " + order.getTotalHarga();
+                    showAlert("Pembayaran Berhasil",null, pesan, Alert.AlertType.INFORMATION);
+                    DepeFood.handleBayarBill(orderID, pilihanPembayaran);
+                    mainApp.setScene(payBillScene);
+                }
+                else{
+                    showAlert("Error", null, "Invalid Payment. User doesnt have the payment type.", Alert.AlertType.ERROR);
+                }
             }
-            DepeFood.handleBayarBill(orderID, pilihanPembayaran);
-            showAlert("Pembayaran Berhasil",null, pesan, Alert.AlertType.INFORMATION);
-            mainApp.setScene(payBillScene);
         }
         else {
             showAlert("Error", null, "Invalid OrderID. Please try again.", Alert.AlertType.ERROR);

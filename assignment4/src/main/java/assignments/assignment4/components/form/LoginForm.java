@@ -96,6 +96,7 @@ public class LoginForm {
             alert.setHeaderText(null);
             alert.setContentText("Login successful. Welcome, " + userLoggedIn.getName() + "!");
             alert.showAndWait();
+            DepeFood.setPenggunaLoggedIn(userLoggedIn);
             if (userLoggedIn.role.equals("Admin")){
                 AdminMenu adminMenu = new AdminMenu(stage, mainApp, userLoggedIn);
                 nameInput.clear();
